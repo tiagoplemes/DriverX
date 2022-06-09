@@ -104,3 +104,10 @@ export const VerticalSeparator = styled.View`
     height: 100%;
     background-color: ${theme.colors.muted};
 `;
+
+export const Bullet = styled.View`
+    width: 7px;
+    height: 7px;
+    border-radius: 7px;
+    background: ${props => props.destination ? '#FF2929' : '#00EB5E'};
+`;

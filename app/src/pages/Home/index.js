@@ -1,6 +1,16 @@
 import React from "react";
 
-import { Container, Title, SubTitle, Spacer, Map, Avatar, Input, Button, ButtonText, VerticalSeparator } from '../../styles';
+import { Container, 
+    Title, 
+    SubTitle, 
+    Spacer, 
+    Map,
+    Avatar, 
+    Input, 
+    Button, 
+    ButtonText, 
+    VerticalSeparator, 
+    Bullet } from '../../styles';
 import { TouchableOpacity } from 'react-native';
 
 const Home = () => {
@@ -30,16 +40,37 @@ const Home = () => {
             >
                 {/* PARTE SUPERIOR */}
                 <Container
-                    height={100}
+                    height={120}
                     justify="flex-start"
                     align="flex-start"
                 >
-                    <TouchableOpacity>
+                    {status === "S" && <TouchableOpacity>
                         <Avatar 
                             source={{
                                 uri: 'https://www.jornalcontabil.com.br/wp-content/uploads/2022/03/motorista-de-caminhao-desistir-durante-a-pandemia-de-coronavirus_53419-9469.jpg'
                             }}/>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
+
+                    {status !== "S" && 
+                        <Container elevation={50} justify="flex-end" color="light">
+                            <Container padding={20}>
+                                <Container justify="flex-start" row>
+                                    <Bullet />
+                                    <SubTitle>{' '}Endereço de embarque completo</SubTitle>
+                                </Container>
+                                <Spacer height={10}/>
+                                <Container justify="flex-start" row>
+                                    <Bullet destination/>
+                                    <SubTitle>{' '}Endereço de destino completo</SubTitle>
+                                </Container>
+
+
+                            </Container>
+                            <Button type="dark" compact>
+                                <ButtonText color="light">Toque para editar</ButtonText>
+                            </Button>
+                        </Container>
+                    }
 
                 </Container>
                                 
