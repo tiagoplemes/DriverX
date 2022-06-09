@@ -4,7 +4,7 @@ import {Image} from 'react-native';
 import logo from '../../assests/logo.png';
 import bgBottom from '../../assests/imgcarroazul.png';
 
-import { Container, Button, ButtonText } from '../../styles';
+import { Container, ButtonText, Button} from '../../styles';
 
 const Login = () => {
     return (
@@ -17,8 +17,13 @@ const Login = () => {
             top={0}
             zIndex={9}>
             <Image source={logo} />
+
             <Button type="info">
                 <ButtonText color="light">Fazer Login com Facebook</ButtonText>
+            </Button>
+
+            <Button type="light">
+                <ButtonText>Fazer Login com Facebook</ButtonText>
             </Button>
         </Container>
         <Image source={bgBottom} />
