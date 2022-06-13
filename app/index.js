@@ -8,4 +8,4 @@ import Payment from './src/pages/Steps/payment';
 import Ride from './src/pages/Ride';
 import Home from './src/pages/Home';
 
-AppRegistry.registerComponent(appName, () => Home);
+AppRegistry.registerComponent(appName, () => Login);
