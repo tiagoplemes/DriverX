@@ -10,13 +10,14 @@ import { Container,
     Button, 
     ButtonText, 
     VerticalSeparator, 
-    Bullet } from '../../styles';
+    Bullet,
+    PulseCircle } from '../../styles';
 import { TouchableOpacity } from 'react-native';
 
 const Home = () => {
 
-    const tipo = 'P';
-    const status = 'I'; // S - SEM CORRIDA, I - INFORMAÇÕES, P - PESQUISA, C - CORRIDA
+    const tipo = 'M';
+    const status = 'C'; // S - SEM CORRIDA, I - INFORMAÇÕES, P - PESQUISA, C - CORRIDA
 
     return (
         <Container>
@@ -27,6 +28,7 @@ const Home = () => {
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
+                disabled={status === 'P'}
             />
             
             <Container
@@ -39,23 +41,22 @@ const Home = () => {
                 style={{height: '100%'}}
             >
                 {/* PARTE SUPERIOR */}
-                <Container
-                    height={120}
-                    justify="flex-start"
-                    align="flex-start"
-                >
-                    {status === "S" && <TouchableOpacity>
-                        <Avatar 
-                            source={{
-                                uri: 'https://www.jornalcontabil.com.br/wp-content/uploads/2022/03/motorista-de-caminhao-desistir-durante-a-pandemia-de-coronavirus_53419-9469.jpg'
-                            }}/>
-                    </TouchableOpacity>}
+                <Container height={120} justify="flex-start" align="flex-start">
+                    {/* AVATAR */}
+                    {status === "S" || tipo === "M" && 
+                        <TouchableOpacity>
+                            <Avatar 
+                                source={{
+                                    uri: 'https://www.jornalcontabil.com.br/wp-content/uploads/2022/03/motorista-de-caminhao-desistir-durante-a-pandemia-de-coronavirus_53419-9469.jpg'
+                                }}/>
+                        </TouchableOpacity>
+                    }
 
-                    {status !== "S" && 
+                    {status !== "S" && tipo === "P" && 
                         <Container elevation={50} justify="flex-end" color="light">
                             <Container padding={20}>
                                 <Container justify="flex-start" row>
-                                    <Bullet />
+                                    <Bullet /   >
                                     <SubTitle>{' '}Endereço de embarque completo</SubTitle>
                                 </Container>
                                 <Spacer height={10}/>
@@ -63,8 +64,6 @@ const Home = () => {
                                     <Bullet destination/>
                                     <SubTitle>{' '}Endereço de destino completo</SubTitle>
                                 </Container>
-
-
                             </Container>
                             <Button type="dark" compact>
                                 <ButtonText color="light">Toque para editar</ButtonText>
@@ -74,8 +73,17 @@ const Home = () => {
 
                 </Container>
                                 
-                <Container elevation={50} height={150} color="light">
+                {/* PASSAGEIRO PROCURANDO CORRIDA */}
+                {status === 'P' && tipo === 'P' && <Container padding={20} zIndex={-1}>
+                    <PulseCircle 
+                        numPulses={3}
+                        diameter={400}
+                        speed={20}
+                        dutarion={2000}
+                    />
+                </Container>}
 
+                <Container elevation={50} height={150} color="light">
                     {/* PASSAGEIRO SEM CORRIDA */}
                     {tipo === "P" && status === "S" && 
                         <Container justify="flex-start" padding={20} align="flex-start">
@@ -87,7 +95,7 @@ const Home = () => {
                     }
 
                     {/* PASSAGEIRO INFORMAÇÕES DA CORRIDA */}
-                    {tipo === "P" && status === "I" && 
+                    {tipo === "P" && (status === "I" || status === 'P') && 
                         <Container justify="flex-end" align="flex-start">
                             <Container padding={20}>
                                 <SubTitle>DriverX Convencional</SubTitle>
@@ -102,21 +110,85 @@ const Home = () => {
                                     </Container>
                                 </Container>
                             </Container>
-                            <Button>
-                                <ButtonText>Chamar DriverX</ButtonText>
+                            <Button type={status === 'P' ? 'muted' : 'primary'}>
+                                <ButtonText>{status === 'P' ? 'Cancelar DriverX' : 'Chamar DriverX'}</ButtonText>
                             </Button>
                         </Container>
                     }
 
+                    {/* PASSAGEIRO EM CORRIDA */}
+                    {tipo === "P" && status === "C" &&
+                        <Container boder="primary" justify="flex-end" align="flex-start">                        
+                            <Container row padding={20}>
+                                <Container align="flex-start"  row>
+                                            <Avatar 
+                                                small
+                                                source={{
+                                                    uri: 'https://www.jornalcontabil.com.br/wp-content/uploads/2022/03/motorista-de-caminhao-desistir-durante-a-pandemia-de-coronavirus_53419-9469.jpg'
+                                                }}
+                                            />
+                                            <Spacer width="10px" />
+                                            <Container align="flex-start">
+                                                <SubTitle bold>Luan Evangelista</SubTitle>
+                                                <SubTitle small>ABC-123, BMW X6, Preta</SubTitle>
+                                            </Container>
+                                </Container>
+                                <VerticalSeparator />
+                                <Container width={120}>
+                                    <Title>R$ 12,90</Title>
+                                    <SubTitle bold color="primary">Aprox. 5mins</SubTitle>
+                                </Container>
+                            </Container>
+                            <Button type="muted">
+                                <ButtonText>Cancelar Corrida</ButtonText>
+                            </Button>                                                                                                         
+                        </Container>
+                    }
+
                     {/* MOTORISTA SEM CORRIDA */}
-                    {tipo === "M" && 
+                    {tipo === "M" && status === "S" && 
                         <Container>
                             <SubTitle>Olá, Juliana.</SubTitle>
                             <Title>Nem uma corrida encontrada.</Title>
                         </Container>
                     }
-                </Container>
 
+                    {/* MOTORISTA ESTÁ EM CORRIDA */}
+                    {tipo === "M" && status === "C" &&
+                        <Container boder="primary" justify="flex-end" align="flex-start">                        
+                            <Container row padding={20}>
+                                <Container align="flex-start"  row>
+                                    <Avatar 
+                                        small
+                                        source={{
+                                            uri: 'https://www.jornalcontabil.com.br/wp-content/uploads/2022/03/motorista-de-caminhao-desistir-durante-a-pandemia-de-coronavirus_53419-9469.jpg'
+                                        }}
+                                    />                                    
+                                    <Spacer width="10px" />
+                                    <Container align="flex-start">
+                                        <Container justify="flex-start" row>
+                                            <Bullet />
+                                            <SubTitle small numberOfLines={1}>{' '}Endereço de embarque completo</SubTitle>
+                                        </Container>                                            
+                                        <Container justify="flex-start" row>
+                                            <Bullet destination/>
+                                            <SubTitle small numberOfLines={1}>{' '}Endereço de destino completo</SubTitle>
+                                        </Container>
+                                    </Container>
+                                </Container>
+                                <VerticalSeparator />
+                                <Container width={120}>
+                                    <Title>R$ 12,90</Title>
+                                    <SubTitle bold color="primary">Aprox. 5mins</SubTitle>
+                                </Container>
+                            </Container>
+                            <Button type="primary">
+                                <ButtonText>Aceitar Corrida</ButtonText>
+                            </Button>                                                                                                         
+                        </Container>
+                    }
+
+                </Container>
             </Container>
         </Container>
     );
